@@ -5,6 +5,7 @@ class ProductModel {
   String? about;
   double? rating;
   int? reviews;
+  int? count;
   String? id;
 
   ProductModel(
@@ -14,6 +15,7 @@ class ProductModel {
         this.about,
         this.rating,
         this.reviews,
+        this.count,
         this.id});
 
   ProductModel.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class ProductModel {
     about = json['about'];
     rating = json['rating'];
     reviews = json['reviews'];
+    count = json['count'];
     id = json['id'];
   }
 
@@ -34,6 +37,7 @@ class ProductModel {
     data['about'] = about;
     data['rating'] = rating;
     data['reviews'] = reviews;
+    data['count'] = count;
     data['id'] = id;
     return data;
   }

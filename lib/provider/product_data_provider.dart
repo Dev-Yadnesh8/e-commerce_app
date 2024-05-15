@@ -7,10 +7,13 @@ import 'package:http/http.dart' as http;
 
 class ProductProvider extends ChangeNotifier {
   List<ProductModel> _products = [];
+  List<ProductModel> _searchedProducts = [];
   bool _isLoading = true;
   bool get isLoading => _isLoading;
 
-  int _count = 0;
+  String searchText='';
+
+  int _count = 1;
 
   static const String productUrl = "https://664323fd3c01a059ea21a799.mockapi.io/cricket";
 
@@ -24,6 +27,7 @@ class ProductProvider extends ChangeNotifier {
         _products = jsonList.map((json) => ProductModel.fromJson(json)).toList();
         _isLoading = false;
         print("List--$_products");
+        updateData();
         notifyListeners();
       }else{
         _isLoading = false;
@@ -42,6 +46,7 @@ class ProductProvider extends ChangeNotifier {
 
   // get products
   List<ProductModel> get products => _products;
+  List<ProductModel> get searchedProducts => _searchedProducts;
 
   // get cart
   List<ProductModel> get cart => _cart;
@@ -49,13 +54,17 @@ class ProductProvider extends ChangeNotifier {
   // get count
   int get count => _count;
 
-  void incrementCount() {
+  void incrementCount(ProductModel product) {
+
     _count++;
     notifyListeners();
   }
 
-  void decrementCount() {
-    _count--;
+  void decrementCount(ProductModel product) {
+    if(_count > 1){
+      _count--;
+    }
+
     notifyListeners();
   }
 
@@ -69,5 +78,24 @@ class ProductProvider extends ChangeNotifier {
   void removeItem(ProductModel item) {
     cart.remove(item);
     notifyListeners();
+  }
+
+  void updateData(){
+    _searchedProducts.clear();
+    if(searchText.isEmpty){
+      _searchedProducts.addAll(_products) ;
+      print("not searched--$_searchedProducts");
+      notifyListeners();
+    }else{
+      _searchedProducts.addAll(_products.where((element) => element.name!.toUpperCase().startsWith(searchText.toUpperCase())).toList());
+      print("searched--$_searchedProducts");
+      notifyListeners();
+    }
+
+  }
+
+  void search(String value){
+    searchText = value;
+    updateData();
   }
 }

@@ -26,7 +26,9 @@ class DetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     final heroTag = 'productView_${productModel.id}';
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -44,32 +46,38 @@ class DetailsScreen extends StatelessWidget {
                 flex: 6,
                 child: ListView(
                   children: [
-                    Stack(
-                      children: [
-                        ClipPath(
-                          clipper: mClipper(),
-                          child: Container(
-                            height: 500,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color: Theme.of(context).colorScheme.secondary),
-                          ),
-                        ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: ColorFiltered(
-                            colorFilter: const ColorFilter.mode(
-                              Colors.transparent,
-                              BlendMode.dstOut,
-                            ),
-                            child: Image.network(
-                              productModel.image.toString(),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Stack(
+                        children: [
+                          ClipPath(
+                            clipper: mClipper(),
+                            child: Container(
+                              height: 500,
                               width: double.infinity,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Theme.of(context).colorScheme.secondary),
                             ),
                           ),
-                        ),
-                      ],
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: ColorFiltered(
+                              colorFilter: const ColorFilter.mode(
+                                Colors.transparent,
+                                BlendMode.dstOut,
+                              ),
+                              child: Hero(
+                                tag: heroTag,
+                                child: Image.network(
+                                  productModel.image.toString(),
+                                  width: double.infinity,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     // image of product
 
@@ -108,7 +116,7 @@ class DetailsScreen extends StatelessWidget {
                       addToCart(context);
                     },
                   style: ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.primary)
+                    backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.secondary)
                   ),
                     child: const Text("Add to cart",style: TextStyle(color: Colors.black),),
                 ),

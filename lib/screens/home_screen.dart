@@ -25,6 +25,8 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
+  TextEditingController searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     print("Build");
@@ -64,6 +66,29 @@ class _HomeScreenState extends State<HomeScreen> {
             return ListView(
               children: [
                 const SizedBox(height: 20),
+                // search bar
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: TextField(
+                      onChanged: (value) {
+                        provider.search(value);
+                      },
+                      controller: searchController,
+                      cursorColor: Colors.grey,
+                      decoration: InputDecoration(
+                        suffixIcon:  Icon(Icons.search,color: Colors.grey.shade600,),
+                          filled: true,
+                        fillColor: Theme.of(context).colorScheme.primary,
+                          focusColor: Theme.of(context).colorScheme.primary,
+                          label: const Text("Search... for your fav bat"),
+                          border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 25),
                 Center(
                   child: Text(
                     "Popular premium products",
@@ -72,13 +97,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 10),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.6,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: provider.products.length,
+                    itemCount: provider.searchedProducts.length,
                     itemBuilder: (context, index) {
-                      ProductModel productModel = provider.products[index];
+                      ProductModel productModel = provider.searchedProducts[index];
                       return ProductTile(
                         productModel: productModel,
                         onTap: () {

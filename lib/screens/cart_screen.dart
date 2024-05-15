@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/components/myCartListTile.dart';
 import 'package:e_commerce_app/data/models/product_model.dart';
 import 'package:e_commerce_app/provider/product_data_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CartScreen extends StatelessWidget {
-  const CartScreen({super.key});
+    CartScreen({super.key});
 
   void removeFormCart(BuildContext context,ProductModel productModel){
     showDialog(context: context, builder: (context) => AlertDialog(
@@ -19,6 +20,7 @@ class CartScreen extends StatelessWidget {
       ],
     ),);
   }
+   late int newPrice = 0;
   @override
   Widget build(BuildContext context) {
     final cart = context.watch<ProductProvider>().cart;
@@ -32,18 +34,18 @@ class CartScreen extends StatelessWidget {
       body:cart.isEmpty ? const Center(child: Text("Cart is empty...")):
       Column(
         children: [
+           SizedBox(
+            height: 40,
+            child:Text("Total:-\$$newPrice",style: const TextStyle(fontSize: 20,fontWeight: FontWeight.w600),) ,
+          ),
           Expanded(
             child: ListView.builder(
               itemCount: cart.length,
               itemBuilder: (context, index) {
                 final item = cart[index];
-            return ListTile(
-              title: Text("${item.name}"),
-              subtitle: Text("\$${item.price}"),
-              trailing: IconButton(onPressed: (){
-                removeFormCart(context, item);
-              }, icon: Icon(Icons.delete,color: Colors.red,)),
-            );
+            return MyCartListTile(productModel: item,
+              onTapDecrement: () {context.read<ProductProvider>().decrementCount(item);},
+              onTapIncrement: () {context.read<ProductProvider>().incrementCount(item);},);
             },),
           ),
         ],

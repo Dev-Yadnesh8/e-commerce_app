@@ -13,6 +13,7 @@ class ProductTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final heroTag = 'productView_${productModel.id}';
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -49,10 +50,13 @@ class ProductTile extends StatelessWidget {
                           Colors.transparent,
                           BlendMode.dstOut,
                         ),
-                        child: Image.network(
-                          productModel.image.toString(),
-                          width: double.infinity,
-                          fit: BoxFit.fill,
+                        child: Hero(
+                          tag: heroTag,
+                          child: Image.network(
+                            productModel.image.toString(),
+                            width: double.infinity,
+                            fit: BoxFit.fill,
+                          ),
                         ),
                       ),
                     ),

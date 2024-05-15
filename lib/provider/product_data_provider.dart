@@ -15,7 +15,7 @@ class ProductProvider extends ChangeNotifier {
 
   int _count = 1;
 
-  static const String productUrl = "https://664323fd3c01a059ea21a799.mockapi.io/cricket";
+  static const String productUrl = "YOUR-API-KEY";
 
   // get products from API
   Future<void> getProduct() async {
